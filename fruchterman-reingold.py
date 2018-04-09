@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import argparse
+import random
 import time
 
 from graficador import Graficador
@@ -35,32 +36,63 @@ class FruchtermanReingold:
     
     def randomize_node_positions(self):
         '''Randomiza las posiciones de los nodos'''
-        pass
+        nodos = self.grafo[0]
+        for node in nodos:
+            x = random.randrange(1, 800)
+            y = random.randrange(1, 600)
+            self.posiciones[node] = Vector(x, y)
     
-    def repulsion(self, delta):
-        '''Calcula la fuerza de repulsión dado el vector diferencia'''
-        pass
+    def repulsion(self, d):
+        '''Calcula la fuerza de repulsión dada la distancia'''
+        return self.k**2 / d
     
-    def atraccion(self, delta):
-        '''Calcula la fuerza de atracción dado el vector diferencia'''
-        pass
+    def atraccion(self, d):
+        '''Calcula la fuerza de atracción dada la distancia'''
+        return d**2 / self.k
     
-    def step(self, delta):
+    def step(self):
         '''
         Efectúa un paso de la simulación, actualizando posiciones 
         de los nodos
         '''
+        self.randomize_node_positions()
     
     def create_view(self):
         '''Inicializa el graficador'''
-        pass
+        self.graficador = Graficador(800, 600)
+
+    def dibujar(self):
+        self.graficador.dibujar_grafo(self.grafo, self.posiciones)
     
     def run(self):
         '''
         Ejecuta los pasos del algoritmo, de acuerdo a los argumentos
         con los cuales se inicializó la clase.
         '''
-        pass
+        # Inicializamos la 'pantalla'
+        self.create_view()
+        
+        # Inicializamos las posiciones
+        self.randomize_node_positions()
+        
+        # Si es necesario, lo mostramos por pantalla
+        if (self.refresh > 0):
+            self.dibujar()
+        
+        # Bucle principal
+        for i in range(0, self.iters):
+            # Esperamos un tiempo para hacerlo interactivo
+            time.sleep(0.2)
+            
+            # Realizar un paso de la simulacion
+            self.step()
+                
+            # Si es necesario, lo mostramos por pantalla
+            if (self.refresh > 0 and i % self.refresh == 0):
+                self.dibujar()
+                
+        # Ultimo dibujado al final
+        self.dibujar()
 
 def obtenerArgumentos():
     # Definimos los argumentos de linea de comando que aceptamos
