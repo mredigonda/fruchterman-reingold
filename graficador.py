@@ -11,8 +11,10 @@ class Graficador:
         '''
         pygame.init()
         
-        self.screen_size = width, height
-        self.screen = pygame.display.set_mode(self.screen_size)
+        self.width = width
+        self.height = height    
+        self.screen_size = Vector(width, height)
+        self.screen = pygame.display.set_mode(self.screen_size.toIntegerPair())
         
         # Definimos constantes
         self.background_color = 255, 255, 255
@@ -49,18 +51,12 @@ class Graficador:
         self.screen.fill(self.background_color)
         
         for edge in edges:
-            self._dibujar_arista(posiciones[edge[0]], 
-                            posiciones[edge[1]])
+            a = posiciones[edge[0]] * self.screen_size
+            b = posiciones[edge[1]] * self.screen_size
+            self._dibujar_arista(a, b)
         
         for node in nodes:
-            self._dibujar_nodo(posiciones[node])
+            where = posiciones[node] * self.screen_size
+            self._dibujar_nodo(where)
         
         pygame.display.flip()
-
-##~ Ejemplo de uso
-#~ x = Graficador(800, 600)
-#~ posiciones = {}
-#~ posiciones[1] = Vector(20, 30)
-#~ posiciones[2] = Vector(100, 200)
-#~ posiciones[3] = Vector(50, 300)
-#~ x.dibujar_grafo( ([1, 2, 3], [(1, 2), (2, 3), (3, 1)]), posiciones )
