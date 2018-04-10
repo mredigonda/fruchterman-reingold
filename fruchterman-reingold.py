@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
 import argparse
-import random
+import math
 import time
+from random import random
 
 from graficador import Graficador
 from vector import Vector
@@ -38,8 +39,8 @@ class FruchtermanReingold:
         '''Randomiza las posiciones de los nodos'''
         nodos = self.grafo[0]
         for node in nodos:
-            x = random.randrange(1, 800)
-            y = random.randrange(1, 600)
+            x = self.W*random()
+            y = self.H*random()
             self.posiciones[node] = Vector(x, y)
     
     def repulsion(self, d):
@@ -55,7 +56,47 @@ class FruchtermanReingold:
         Efectúa un paso de la simulación, actualizando posiciones 
         de los nodos
         '''
-        self.randomize_node_positions()
+        nodes = self.grafo[0]
+        edges = self.grafo[1]
+        despl = {}
+        
+        # 1: Calcular repulsiones de nodos (actualiza fuerzas)
+        for u in nodes:
+            despl[u] = Vector(0, 0)
+            for v in nodes:
+                if u == v:
+                    continue
+                delta = self.posiciones[u] - self.posiciones[v]
+                dist = delta.longitud()
+                if dist != 0:
+                    d = self.repulsion(dist) / dist
+                    despl[u] = (despl[u] + delta*d)
+
+        # 2: Calcular atracciones de aristas (actualiza fuerzas)
+        for u, v in edges:
+            delta = self.posiciones[u] - self.posiciones[v]
+            dist = delta.longitud()
+            if delta != 0:
+                d = self.atraccion(dist) / dist
+                dd = delta*d
+                despl[u] = (despl[u] - dd)
+                despl[v] = (despl[v] + dd)
+
+        # 4: En base a fuerzas, temperatura y bordes, actualizar
+        # las posiciones de los nodos.
+        cnt = 0
+        for node in nodes:
+            delta = despl[node]
+            dist = delta.longitud()
+            if dist != 0:
+                cnt = cnt + 1
+                d = min(dist, self.t) / dist
+                npos = self.posiciones[node] + delta*d
+                npos.x = min(self.W, max(0, npos.x)) - self.W/2
+                npos.y = min(self.H, max(0, npos.y)) - self.H/2
+                self.posiciones[node].x = min(math.sqrt(self.W**2/4-npos.y**2), max(-math.sqrt(self.W**2/4-npos.y**2), npos.x)) + self.W/2
+                self.posiciones[node].y = min(math.sqrt(self.H**2/4-npos    .x**2), max(-math.sqrt(self.H**2/4-npos.x**2), npos.y)) + self.H/2
+        self.t -= self.dt
     
     def create_view(self):
         '''Inicializa el graficador'''
@@ -69,6 +110,17 @@ class FruchtermanReingold:
         Ejecuta los pasos del algoritmo, de acuerdo a los argumentos
         con los cuales se inicializó la clase.
         '''
+        # Inicializamos constantes
+        nodes = self.grafo[0]
+        
+        self.W = 1
+        self.H = 1;
+        self.area = self.W * self.H
+        self.k = math.sqrt(self.area/len(nodes))
+        
+        self.t = self.W / 10
+        self.dt = self.t / (self.iters + 1)
+        
         # Inicializamos la 'pantalla'
         self.create_view()
         
