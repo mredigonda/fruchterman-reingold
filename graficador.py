@@ -62,7 +62,8 @@ class Graficador:
             self._dibujar_arista(a, b)
         
         for node in nodes:
-            self._dibujar_texto(node, self.screen_size * posiciones[node])
+            shift = Vector(self.node_radius, self.node_radius)
+            self._dibujar_texto(node, self.screen_size * posiciones[node] + shift)
             
             where = posiciones[node] * self.screen_size
             self._dibujar_nodo(where)
