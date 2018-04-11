@@ -42,6 +42,7 @@ class Graficador:
             a.toIntegerPair(), b.toIntegerPair(), self.edge_thickness)
 
     def _dibujar_texto(self, texto, where):
+        '''Dibuja texto por pantalla, en la posición especificada'''
         texto = str(texto)
         font = pygame.font.SysFont('Comic Sans MS', 25)
         texto = font.render(texto, True, (0, 0, 0))
@@ -72,6 +73,7 @@ class Graficador:
         pygame.display.flip()
     
     def permitir_cerrado(self):
+        '''Comienza a escuchar la acción del usuario de cerrar el programa'''
         while 1:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: sys.exit()

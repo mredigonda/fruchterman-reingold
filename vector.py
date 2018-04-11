@@ -13,6 +13,7 @@ class Vector:
         return Vector(self.x - other.x, self.y - other.y)
 
     def __mul__(self, other):
+        '''Producto por escalar, y producto punto a punto por vector'''
         if isinstance(other, self.__class__):
             return Vector(self.x * other.x, self.y * other.y)
         else:

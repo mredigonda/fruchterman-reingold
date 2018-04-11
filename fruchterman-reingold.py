@@ -2,7 +2,6 @@
 
 import argparse
 import math
-import time
 from random import random
 
 from graficador import Graficador
@@ -101,6 +100,7 @@ class FruchtermanReingold:
         self.graficador = Graficador(800, 600)
 
     def dibujar(self):
+        '''Dibuja el grafo mediante el graficador'''
         self.graficador.dibujar_grafo(self.grafo, self.posiciones)
     
     def run(self):
@@ -147,6 +147,7 @@ class FruchtermanReingold:
         self.graficador.permitir_cerrado()
 
 def obtenerArgumentos():
+    '''Procesa los argumentos de la linea de comandos'''
     # Definimos los argumentos de linea de comando que aceptamos
     parser = argparse.ArgumentParser()
     
