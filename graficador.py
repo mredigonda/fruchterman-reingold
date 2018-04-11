@@ -40,6 +40,12 @@ class Graficador:
         pygame.draw.line(self.screen, self.edge_color,
             a.toIntegerPair(), b.toIntegerPair(), self.edge_thickness)
 
+    def _dibujar_texto(self, texto, where):
+        texto = str(texto)
+        font = pygame.font.SysFont('Comic Sans MS', 25)
+        texto = font.render(texto, True, (0, 0, 0))
+        self.screen.blit(texto, where.toIntegerPair())
+
     def dibujar_grafo(self, grafo, posiciones):
         '''
         Recibe la descripción de un grafo, junto con un diccionario
@@ -56,6 +62,8 @@ class Graficador:
             self._dibujar_arista(a, b)
         
         for node in nodes:
+            self._dibujar_texto(node, self.screen_size * posiciones[node])
+            
             where = posiciones[node] * self.screen_size
             self._dibujar_nodo(where)
         

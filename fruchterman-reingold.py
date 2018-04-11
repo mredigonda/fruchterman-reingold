@@ -45,11 +45,11 @@ class FruchtermanReingold:
     
     def repulsion(self, d):
         '''Calcula la fuerza de repulsión dada la distancia'''
-        return self.k**2 / d
+        return self.c1 * self.k**2 / d
     
     def atraccion(self, d):
         '''Calcula la fuerza de atracción dada la distancia'''
-        return d**2 / self.k
+        return self.c2 * d**2 / self.k
     
     def step(self):
         '''
@@ -92,10 +92,8 @@ class FruchtermanReingold:
                 cnt = cnt + 1
                 d = min(dist, self.t) / dist
                 npos = self.posiciones[node] + delta*d
-                npos.x = min(self.W, max(0, npos.x)) - self.W/2
-                npos.y = min(self.H, max(0, npos.y)) - self.H/2
-                self.posiciones[node].x = min(math.sqrt(self.W**2/4-npos.y**2), max(-math.sqrt(self.W**2/4-npos.y**2), npos.x)) + self.W/2
-                self.posiciones[node].y = min(math.sqrt(self.H**2/4-npos    .x**2), max(-math.sqrt(self.H**2/4-npos.x**2), npos.y)) + self.H/2
+                self.posiciones[node].x = min(self.W, max(0, npos.x))
+                self.posiciones[node].y = min(self.H, max(0, npos.y))
         self.t -= self.dt
     
     def create_view(self):
@@ -132,17 +130,16 @@ class FruchtermanReingold:
             self.dibujar()
         
         # Bucle principal
-        for i in range(0, self.iters):
-            # Esperamos un tiempo para hacerlo interactivo
-            time.sleep(0.2)
-            
+        for i in range(0, self.iters):            
             # Realizar un paso de la simulacion
             self.step()
+            if i % 20 == 0 and self.verbose:
+                print('Temperatura: ' + str(self.t))
                 
             # Si es necesario, lo mostramos por pantalla
             if (self.refresh > 0 and i % self.refresh == 0):
                 self.dibujar()
-                
+            
         # Ultimo dibujado al final
         self.dibujar()
 
@@ -165,27 +162,47 @@ def obtenerArgumentos():
     # Fuerza de repulsión, opcional. 1.0 por defecto.
     parser.add_argument('-c1', '--repulsion', type=float, 
                         help='Constante de repulsión entre nodos', 
-                        default=1.0)
+                        default=3e-3)
                         
     # Fuerza de atracción, opcional. 2.5 por defecto.
     parser.add_argument('-c2', '--atraccion', type=float, 
                         help='Constante de atracción de aristas', 
-                        default=2.5)
+                        default=1e-2)
                         
     # Cantidad de iteraciones, opcional, 50 por defecto.
     parser.add_argument('-i', '--iters', type=int, 
                         help='Cantidad de iteraciones a efectuar', 
-                        default=50)
+                        default=500)
+
+    # Ruta al archivo conteniendo la descripción del grafo. Requerida.
+    parser.add_argument('-p', '--path',
+                        help='Ruta al archivo con la descripción del grafo')
+
     args = parser.parse_args()
     return args
     
 def main():
     args = obtenerArgumentos()
     
+    # Leemos el grafo del archivo indicado
+    f = open(args.path, 'r')
+    n, m = f.readline().split(' ')
+    n = int(n)
+    m = int(m)
+    nodos = []
+    aristas  = []
+    for i in range(n):
+        nodos.append(f.readline().rstrip())
+    for i in range(m):
+        a, b = f.readline().split(' ')
+        a = a.rstrip()
+        b = b.rstrip()
+        aristas.append( (a, b) )
+    grafo = (nodos, aristas)
+    
+    # Inicializamos la clase y corremos el algoritmo
     fruchterman_reingold = FruchtermanReingold(
-        ([1, 2, 3, 4, 5, 6, 7], 
-         [(1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 1)]
-        ),  # TODO: Cambiar a usar grafo leido de archivo.
+        grafo,
         iters=args.iters,
         refresh=args.refresh,
         c1=args.repulsion,
