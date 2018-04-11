@@ -2,7 +2,13 @@
 
 ## Uso
 
-Para usarlo, primero se debe escribir la descripción del grafo en un archivo. En la primer linea, debe haber dos enteros `n` y `m`, donde `n` es la cantidad de nodos y `m` es la cantidad de aristas. En las siguientes `n` lineas debe estar la etiqueta de cada nodo, y en las últimas m lineas debe estar la descripción de las aristas, una por linea, con las etiquetas de los dos nodos que conecta.
+Primero, es necesario tener `pygame` instalado para usar este programa, se puede instalar mediante:
+
+```
+pip3 install pygame
+```
+
+Para usar el graficador, primero se debe escribir la descripción del grafo en un archivo. En la primer linea, debe haber dos enteros `n` y `m`, donde `n` es la cantidad de nodos y `m` es la cantidad de aristas. En las siguientes `n` lineas debe estar la etiqueta de cada nodo, y en las últimas m lineas debe estar la descripción de las aristas, una por linea, con las etiquetas de los dos nodos que conecta.
 
 Para ver ejemplos, ir a `/data/dataXY.txt`. Para probarlo en alguno de los ejemplos, usar:
 
