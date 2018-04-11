@@ -1,5 +1,6 @@
 import pygame
 import math
+import sys
 from vector import Vector
 
 class Graficador:
@@ -69,3 +70,8 @@ class Graficador:
             self._dibujar_nodo(where)
         
         pygame.display.flip()
+    
+    def permitir_cerrado(self):
+        while 1:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT: sys.exit()

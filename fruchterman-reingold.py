@@ -142,6 +142,9 @@ class FruchtermanReingold:
             
         # Ultimo dibujado al final
         self.dibujar()
+        
+        # Solo al final, permitimos que el usuario cierre la ventana
+        self.graficador.permitir_cerrado()
 
 def obtenerArgumentos():
     # Definimos los argumentos de linea de comando que aceptamos
