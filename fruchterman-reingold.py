@@ -171,7 +171,7 @@ def obtenerArgumentos():
     # Fuerza de atracción, opcional. 2.5 por defecto.
     parser.add_argument('-c2', '--atraccion', type=float, 
                         help='Constante de atracción de aristas', 
-                        default=1e-2)
+                        default=3e-2)
                         
     # Cantidad de iteraciones, opcional, 50 por defecto.
     parser.add_argument('-i', '--iters', type=int, 

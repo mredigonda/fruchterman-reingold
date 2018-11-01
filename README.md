@@ -1,36 +1,36 @@
-# Graficador de Grafos mediante Fruchterman-Reingold
+# Graph Drawer (using Fruchterman-Reingold)
 
-## Uso
+## Usage
 
-Primero, es necesario tener `pygame` instalado para usar este programa, se puede instalar mediante:
+First, it is required to have `pygame` installed in your system, you can install it via:
 
 ```
 pip3 install pygame
 ```
 
-Para usar el graficador, primero se debe escribir la descripción del grafo en un archivo. En la primer linea, debe haber dos enteros `n` y `m`, donde `n` es la cantidad de nodos y `m` es la cantidad de aristas. En las siguientes `n` lineas debe estar la etiqueta de cada nodo, y en las últimas m lineas debe estar la descripción de las aristas, una por linea, con las etiquetas de los dos nodos que conecta.
+To use the drawer, you first have to write the description of the graph to a file. In the first line, there should be integers `n` and `m`, where `n` is the number of nodes and `m` is the number of edges. In the following `n` lines there should be tags for each node, and in the last m lines, there should be a description of each edge, one per line, with the tags of the nodes it connects.
 
-Para ver ejemplos, ir a `/data/dataXY.txt`. Para probarlo en alguno de los ejemplos, usar:
+To see some examples, go to `/data/dataXY.txt`. To test it with one of the examples, run:
 
 ```
 python3 fruchterman-reingold.py --path data/dataXY.txt
 ```
 
-Reemplazando `XY` por lo que corresponda.
+Replacing `XY` with the example that you want to test.
 
-Las constantes y la cantidad de iteraciones están configuradas a lo que experimentalmente dio buenos resultados, pero en caso de querer cambiarlas, con las opciones `--atraccion` y `--repulsion` se puede indicar una constante distinta por la cual multiplicar las funciones de atracción y repulsión.
+The constants and the number of iterations are configured to what gave good results experimentally, but you can change them using the options `--atraccion` for attraction and `--repulsion` for repulsion.
 
-## Ejemplo
+## Example
 
-Estos son algunos de los resultados obtenidos:
+These are some of the results obtained:
 
-![Cubo](ejemplos/cubo.png)
-![Triangulo triangulado](ejemplos/triangulo_triangulado.png)
-![K5 unidos](ejemplos/k5_unidos.png)
+![Cube](ejemplos/cubo.png)
+![Triangulated triangle](ejemplos/triangulo_triangulado.png)
+![connected K5](ejemplos/k5_unidos.png)
 ![K9](ejemplos/k9.png)
 ![K3-3](ejemplos/k33.png)
-![Triangulo con K5](ejemplos/triangulo_k5.png)
+![Triangle with K5](ejemplos/triangulo_k5.png)
 
-Aunque, no siempre se obtiene la forma común con la que se conoce a cierto grafo, por ejemplo, el [grafo de Petersen](https://es.wikipedia.org/wiki/Grafo_de_Petersen), pero esto se debe a la naturaleza de los [algoritmos de dibujado de grafos mediante fuerzas](https://en.wikipedia.org/wiki/Force-directed_graph_drawing).
+However, you don't always obtain the common picture with which a graph is known, as an example, the [Petersen graph](https://en.wikipedia.org/wiki/Petersen_graph), but this is a consequence of how the [force directed graph drawing algorithms](https://en.wikipedia.org/wiki/Force-directed_graph_drawing).
 
 ![Petersen](ejemplos/petersen.png)
